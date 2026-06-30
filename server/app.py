@@ -6,5 +6,18 @@ contracts = [{"id": 1, "contract_information": "This contract is for John and bu
 customers = ["bob","bill","john","sarah"]
 app = Flask(__name__)
 
+@app.route('/contract/<int:id>')
+def get_contract(id):
+    contract = next((c for c in contracts if c['id'] == id), None)
+    if contract is None:
+        return make_response('', 404)
+    return make_response(contract['contract_information'], 200)
+
+@app.route('/customer/<string:customer_name>')
+def get_customer(customer_name):
+    if customer_name not in customers:
+        return make_response('', 404)
+    return make_response('', 204)
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
